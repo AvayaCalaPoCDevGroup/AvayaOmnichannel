@@ -92,8 +92,16 @@
     </LinearLayout>
     <Button
         android:id="@+id/btn_test"
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Color"/>
+        <Button
+            android:id="@+id/btn_save"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Guardar"/>
     </LinearLayout>
+
 </ScrollView>

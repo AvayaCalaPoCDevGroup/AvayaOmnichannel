@@ -1,6 +1,7 @@
 package com.example.avayaivr.UI.Fragments;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -20,6 +21,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.avayaivr.UI.Activities.MainActivity;
 import com.example.avayaivr.R;
+import com.example.avayaivr.UI.Clases.Constants;
 
 import java.io.IOException;
 
@@ -39,11 +41,15 @@ public class SettingsFragment extends Fragment {
     private TextView et_settings_body;
     private Button btn_settings_head;
     private Button btn_settings_body;
+    private Button btn_save;
+
+    private SharedPreferences mSharedPreferences;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_settings, container, false);
+        mSharedPreferences = getContext().getSharedPreferences(Constants.AVAYAIVR_PREFERENCES,0);
 
         return root;
     }
@@ -59,6 +65,13 @@ public class SettingsFragment extends Fragment {
         et_settings_body = view.findViewById(R.id.et_settings_body);
         btn_settings_head = view.findViewById(R.id.btn_settings_head);
         btn_settings_body = view.findViewById(R.id.btn_settings_body);
+        btn_save = view.findViewById(R.id.btn_save);
+
+        et_settings_contact.setText(mSharedPreferences.getString(Constants.PREF_CONTACT, ""));
+        et_settings_whatsapp.setText(mSharedPreferences.getString(Constants.PREF_WHATSAPP, ""));
+        et_settings_messenger.setText(mSharedPreferences.getString(Constants.PREF_MESSENGERID, ""));
+        et_settings_head.setText(mSharedPreferences.getString(Constants.PREF_HEAD, ""));
+        et_settings_body.setText(mSharedPreferences.getString(Constants.PREF_BODY, ""));
 
         Button btn_test = view.findViewById(R.id.btn_test);
 
@@ -71,6 +84,18 @@ public class SettingsFragment extends Fragment {
         });
         btn_settings_body.setOnClickListener(v -> {
             ChooseImage(PICK_IMAGE_REQUEST_BODY);
+        });
+        btn_save.setOnClickListener(v -> {
+            SharedPreferences.Editor editor = mSharedPreferences.edit();
+            editor.putString(Constants.PREF_CONTACT,et_settings_contact.getText().toString());
+            editor.putString(Constants.PREF_WHATSAPP,et_settings_whatsapp.getText().toString());
+            editor.putString(Constants.PREF_MESSENGERID,et_settings_messenger.getText().toString());
+            editor.putString(Constants.PREF_HEAD,et_settings_head.getText().toString());
+            editor.putString(Constants.PREF_BODY,et_settings_body.getText().toString());
+
+            editor.commit();
+
+            Toast.makeText(getContext(), "Guardado", Toast.LENGTH_SHORT).show();
         });
 
     }
@@ -95,6 +120,9 @@ public class SettingsFragment extends Fragment {
         @Override
         public void onOk(AmbilWarnaDialog dialog, int color) {
             ((MainActivity)getActivity()).setAppColor(color);
+            SharedPreferences.Editor editor = mSharedPreferences.edit();
+            editor.putInt(Constants.PREF_COLOR,color);
+            editor.commit();
         }
     };
 

@@ -2,12 +2,15 @@ package com.example.avayaivr.UI.Activities;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 
 import com.example.avayaivr.R;
+import com.example.avayaivr.UI.Clases.Constants;
+import com.example.avayaivr.UI.Fragments.ChatFragment;
 import com.example.avayaivr.UI.Fragments.SettingsFragment;
 import com.example.avayaivr.UI.Fragments.HomeFragment;
 
@@ -15,7 +18,6 @@ import android.view.MenuItem;
 import android.view.View;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -42,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
     NavigationView navigationView;
     DrawerLayout drawer;
+    private SharedPreferences mSharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        mSharedPreferences = getSharedPreferences(Constants.AVAYAIVR_PREFERENCES, 0);
 
         drawer = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
@@ -107,11 +112,22 @@ public class MainActivity extends AppCompatActivity {
                         replaceFragment(new HomeFragment());
                         drawer.closeDrawers();
                         break;
+                    case R.id.nav_chat:
+                        replaceFragment(new ChatFragment());
+                        drawer.closeDrawers();
+                        break;
                 }
 
                 return false;
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        int color = mSharedPreferences.getInt(Constants.PREF_COLOR, -64765);
+        setAppColor(color);
     }
 
     public void setAppColor(int color){
@@ -120,9 +136,11 @@ public class MainActivity extends AppCompatActivity {
         mActionBar = getSupportActionBar();
         mActionBar.setBackgroundDrawable(new ColorDrawable(color));
 
-        View navh = navigationView.findViewById(R.id.nav_background);
+        View navh = navigationView.getHeaderView(0).findViewById(R.id.nav_background);
         navh.setBackgroundColor(color);
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

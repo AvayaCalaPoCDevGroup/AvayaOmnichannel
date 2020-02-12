@@ -27,7 +27,7 @@
                 android:title="@string/menu_whastapp" />
             <item
                 android:id="@+id/nav_chat"
-                android:icon="@android:drawable/btn_dialog"
+                android:icon="@drawable/chat_icon"
                 android:title="Chat" />
         </menu>
     </item>
