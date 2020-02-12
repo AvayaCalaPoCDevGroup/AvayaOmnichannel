@@ -8,6 +8,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 
+import com.example.avayaivr.BuildConfig;
 import com.example.avayaivr.R;
 import com.example.avayaivr.UI.Clases.Constants;
 import com.example.avayaivr.UI.Fragments.ChatFragment;
@@ -19,6 +20,7 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -35,6 +37,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.net.URLEncoder;
@@ -74,38 +77,54 @@ public class MainActivity extends AppCompatActivity {
 
                 switch (menuItem.getItemId()){
                     case R.id.nav_contact:
-                        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + "+5215617296477"));
-                        startActivity(intent);
+                        String telContact = mSharedPreferences.getString(Constants.PREF_CONTACT,"");
+                        if(telContact.equals("")){
+                            Toast.makeText(getApplicationContext(), "Configura el telefono de contacto en los settings", Toast.LENGTH_SHORT).show();
+                        } else {
+                            //Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + "+5215617296477"));
+                            Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + telContact));
+                            startActivity(intent);
+                        }
                         break;
                     case R.id.nav_whatsapp:
-                        PackageManager packageManager = getApplicationContext().getPackageManager();
-                        Intent i = new Intent(Intent.ACTION_VIEW);
-                        String phone = "+5491151992014";
-                        try {
-                            String url = "https://api.whatsapp.com/send?phone="+ phone +"&text=" + URLEncoder.encode("Mensage de prueba", "UTF-8");
-                            i.setPackage("com.whatsapp");
-                            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            i.setData(Uri.parse(url));
-                            if (i.resolveActivity(packageManager) != null) {
-                                getApplicationContext().startActivity(i);
+                        String telWhatsapp = mSharedPreferences.getString(Constants.PREF_WHATSAPP,"");
+                        if(telWhatsapp.equals("")){
+                            Toast.makeText(getApplicationContext(), "Configura el numero de Whatsapp en los settings", Toast.LENGTH_SHORT).show();
+                        } else {
+                            PackageManager packageManager = getApplicationContext().getPackageManager();
+                            Intent i = new Intent(Intent.ACTION_VIEW);
+                            String phone = telWhatsapp;
+                            try {
+                                String url = "https://api.whatsapp.com/send?phone="+ phone +"&text=" + URLEncoder.encode("", "UTF-8");
+                                i.setPackage("com.whatsapp");
+                                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                i.setData(Uri.parse(url));
+                                if (i.resolveActivity(packageManager) != null) {
+                                    getApplicationContext().startActivity(i);
+                                }
+                            } catch (Exception e){
+                                e.printStackTrace();
                             }
-                        } catch (Exception e){
-                            e.printStackTrace();
                         }
+
                         break;
                     case R.id.nav_messenger:
-                        Uri uri = Uri.parse("fb-messenger://user/113255423467121");
-
-                        Intent toMessenger= new Intent(Intent.ACTION_VIEW, uri);
-                        toMessenger.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        //toMessenger.setPackage("com.facebook.orca");
-                        try {
-                            getApplicationContext().startActivity(toMessenger);
-                            //startActivity(toMessenger);
-                        }
-                        catch (android.content.ActivityNotFoundException ex)
-                        {
-                            Toast.makeText(getApplicationContext(), "Please Install Facebook Messenger",    Toast.LENGTH_LONG).show();
+                        String idMessenger = mSharedPreferences.getString(Constants.PREF_MESSENGERID,"");
+                        if(idMessenger.equals("")){
+                            Toast.makeText(getApplicationContext(), "Configura el ID de Messenger en los Settings", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Uri uri = Uri.parse("fb-messenger://user/"+idMessenger);
+                            Intent toMessenger= new Intent(Intent.ACTION_VIEW, uri);
+                            toMessenger.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            //toMessenger.setPackage("com.facebook.orca");
+                            try {
+                                getApplicationContext().startActivity(toMessenger);
+                                //startActivity(toMessenger);
+                            }
+                            catch (android.content.ActivityNotFoundException ex)
+                            {
+                                Toast.makeText(getApplicationContext(), "Please Install Facebook Messenger",    Toast.LENGTH_LONG).show();
+                            }
                         }
                         break;
                     case R.id.nav_home:
@@ -116,11 +135,16 @@ public class MainActivity extends AppCompatActivity {
                         replaceFragment(new ChatFragment());
                         drawer.closeDrawers();
                         break;
+                    default:
+                        Toast.makeText(getApplicationContext(),"En Construccion...", Toast.LENGTH_SHORT).show();
+                        break;
                 }
 
                 return false;
             }
         });
+
+        ((TextView)(navigationView.getHeaderView(0).findViewById(R.id.tv_navheader_version))).setText("Ver: " + BuildConfig.VERSION_NAME);
     }
 
     @Override
