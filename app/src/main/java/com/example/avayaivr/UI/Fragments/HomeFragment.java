@@ -17,8 +17,6 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.avayaivr.R;
@@ -59,6 +57,7 @@ public class HomeFragment extends Fragment {
                 e.printStackTrace();
             }
             Drawable drawable = new BitmapDrawable(getResources(), bitmap);
+            iv_home_head.setImageDrawable(null);
             iv_home_head.setBackground(drawable);
         }
         if(!bodyPath.equals("")){
@@ -70,8 +69,9 @@ public class HomeFragment extends Fragment {
                 e.printStackTrace();
             }
             Drawable drawable = new BitmapDrawable(getResources(), bitmap);
+
+            iv_home_body.setImageDrawable(null);
             iv_home_body.setBackground(drawable);
         }
-
     }
 }

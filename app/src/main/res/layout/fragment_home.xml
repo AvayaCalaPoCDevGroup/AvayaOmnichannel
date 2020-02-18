@@ -7,11 +7,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="2"
+        android:src="@drawable/default_head"
         android:id="@+id/iv_home_head"/>
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:tooltipText="BODY"
         android:layout_weight="1"
+        android:src="@drawable/image_splash_full"
         android:id="@+id/iv_home_body"/>
 </LinearLayout>
