@@ -17,26 +17,30 @@
                 android:icon="@android:drawable/ic_menu_call"
                 android:title="@string/menu_contact" />
             <item
+                android:id="@+id/nav_whatsapp"
+                android:icon="@drawable/whatsapp_icon"
+                android:title="@string/menu_whastapp" />
+            <item
                 android:id="@+id/nav_messenger"
                 android:icon="@drawable/messenger_icon"
                 app:showAsAction="always"
                 android:title="@string/menu_messenger" />
             <item
-                android:id="@+id/nav_whatsapp"
-                android:icon="@drawable/whatsapp_icon"
-                android:title="@string/menu_whastapp" />
-            <item
                 android:id="@+id/nav_chat"
                 android:icon="@drawable/chat_icon"
                 android:title="Chat" />
+            <item
+                android:id="@+id/nav_google"
+                android:icon="@drawable/google_assistant_icon"
+                android:title="Google Assistant" />
+            <item
+                android:id="@+id/nav_email"
+                android:icon="@android:drawable/sym_action_email"
+                android:title="Email" />
         </menu>
     </item>
     <item tools:ignore="MenuTitle">
         <menu>
-        <item
-            android:id="@+id/nav_google"
-            android:icon="@drawable/google_assistant_icon"
-            android:title="Google Assistant" />
         <item
             android:id="@+id/nav_agendar"
             android:icon="@android:drawable/ic_menu_my_calendar"
@@ -45,10 +49,6 @@
             android:id="@+id/nav_videollamada"
             android:icon="@android:drawable/presence_video_online"
             android:title="Videollamada" />
-        <item
-            android:id="@+id/nav_email"
-            android:icon="@android:drawable/sym_action_email"
-            android:title="Email" />
         </menu>
     </item>
 

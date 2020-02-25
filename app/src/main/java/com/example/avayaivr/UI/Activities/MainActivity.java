@@ -101,9 +101,12 @@ public class MainActivity extends AppCompatActivity {
                                 i.setData(Uri.parse(url));
                                 if (i.resolveActivity(packageManager) != null) {
                                     getApplicationContext().startActivity(i);
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "Please Install Whatsapp",    Toast.LENGTH_LONG).show();
                                 }
                             } catch (Exception e){
                                 e.printStackTrace();
+                                Toast.makeText(getApplicationContext(), "Please Install Whatsapp",    Toast.LENGTH_LONG).show();
                             }
                         }
 
@@ -134,6 +137,32 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.nav_chat:
                         replaceFragment(new ChatFragment());
                         drawer.closeDrawers();
+                        break;
+                    case R.id.nav_email:
+                        String mailto, subject, body;
+                        mailto = mSharedPreferences.getString(Constants.PREF_EMAIL_TO, "");
+                        subject = mSharedPreferences.getString(Constants.PREF_EMAIL_SUBJECT, "");
+                        body = mSharedPreferences.getString(Constants.PREF_EMAIL_BODY, "");
+                        if(mailto.equals("")){
+                            Toast.makeText(getApplicationContext(), "Configura el Email To en los Settings", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
+                            emailIntent.setData(Uri.parse("mailto:" + mailto + "?subject=" + subject + "&body=" + body));
+                            startActivity(emailIntent);
+                        }
+                        break;
+                    case R.id.nav_google:
+                        //String url = "https://assistant.google.com/services/invoke/uid/000000d139bbc4d4?utm_source=Google&utm_medium=email&utm_campaign=holiday+sale";
+                        String url = mSharedPreferences.getString(Constants.PREF_GOOGLE, "");
+                        if(url.equals("")){
+                            Toast.makeText(getApplicationContext(), "Configura el URL en los Settings", Toast.LENGTH_SHORT).show();
+                        } else if(!url.contains("assistant")){
+                            Toast.makeText(getApplicationContext(), "El url no tiene el formato adecuado.\nEjemplo: https://assistant.google.com/...", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Intent i = new Intent(Intent.ACTION_VIEW);
+                            i.setData(Uri.parse(url));
+                            startActivity(i);
+                        }
                         break;
                     default:
                         Toast.makeText(getApplicationContext(),"En Construccion...", Toast.LENGTH_SHORT).show();

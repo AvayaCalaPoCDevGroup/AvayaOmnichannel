@@ -49,6 +49,11 @@ public class SettingsFragment extends Fragment {
     private TextView et_settings_contact;
     private TextView et_settings_whatsapp;
     private TextView et_settings_messenger;
+    private TextView et_settings_chat;
+    private TextView et_settings_google;
+    private TextView et_settings_emailto;
+    private TextView et_settings_emailsubject;
+    private TextView et_settings_emailbody;
     private TextView et_settings_head;
     private TextView et_settings_body;
     private Button btn_settings_head;
@@ -73,6 +78,11 @@ public class SettingsFragment extends Fragment {
         et_settings_contact = view.findViewById(R.id.et_settings_contact);
         et_settings_whatsapp = view.findViewById(R.id.et_settings_whatsapp);
         et_settings_messenger = view.findViewById(R.id.et_settings_messenger);
+        et_settings_chat = view.findViewById(R.id.et_settings_chat);
+        et_settings_google = view.findViewById(R.id.et_settings_google);
+        et_settings_emailto = view.findViewById(R.id.et_settings_emailto);
+        et_settings_emailsubject = view.findViewById(R.id.et_settings_emailsubject);
+        et_settings_emailbody = view.findViewById(R.id.et_settings_emailbody);
         et_settings_head = view.findViewById(R.id.et_settings_head);
         et_settings_body = view.findViewById(R.id.et_settings_body);
         btn_settings_head = view.findViewById(R.id.btn_settings_head);
@@ -82,6 +92,12 @@ public class SettingsFragment extends Fragment {
         et_settings_contact.setText(mSharedPreferences.getString(Constants.PREF_CONTACT, ""));
         et_settings_whatsapp.setText(mSharedPreferences.getString(Constants.PREF_WHATSAPP, ""));
         et_settings_messenger.setText(mSharedPreferences.getString(Constants.PREF_MESSENGERID, ""));
+        et_settings_chat.setText(mSharedPreferences.getString(Constants.PREF_CHAT, Constants.CHAT_DEFAULT));
+        et_settings_google.setText(mSharedPreferences.getString(Constants.PREF_GOOGLE, ""));
+        et_settings_emailto.setText(mSharedPreferences.getString(Constants.PREF_EMAIL_TO, ""));
+        et_settings_emailsubject.setText(mSharedPreferences.getString(Constants.PREF_EMAIL_SUBJECT, ""));
+        et_settings_emailbody.setText(mSharedPreferences.getString(Constants.PREF_EMAIL_BODY, ""));
+
         et_settings_head.setText(mSharedPreferences.getString(Constants.PREF_HEAD, ""));
         et_settings_body.setText(mSharedPreferences.getString(Constants.PREF_BODY, ""));
 
@@ -102,6 +118,12 @@ public class SettingsFragment extends Fragment {
             editor.putString(Constants.PREF_CONTACT,et_settings_contact.getText().toString());
             editor.putString(Constants.PREF_WHATSAPP,et_settings_whatsapp.getText().toString());
             editor.putString(Constants.PREF_MESSENGERID,et_settings_messenger.getText().toString());
+            editor.putString(Constants.PREF_CHAT,et_settings_chat.getText().toString());
+            editor.putString(Constants.PREF_GOOGLE,et_settings_google.getText().toString());
+            editor.putString(Constants.PREF_EMAIL_TO,et_settings_emailto.getText().toString());
+            editor.putString(Constants.PREF_EMAIL_SUBJECT,et_settings_emailsubject.getText().toString());
+            editor.putString(Constants.PREF_EMAIL_BODY,et_settings_emailbody.getText().toString());
+
             editor.putString(Constants.PREF_HEAD,et_settings_head.getText().toString());
             editor.putString(Constants.PREF_BODY,et_settings_body.getText().toString());
 
