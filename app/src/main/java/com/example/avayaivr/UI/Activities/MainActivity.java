@@ -152,17 +152,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                         break;
                     case R.id.nav_google:
-                        //String url = "https://assistant.google.com/services/invoke/uid/000000d139bbc4d4?utm_source=Google&utm_medium=email&utm_campaign=holiday+sale";
-                        String url = mSharedPreferences.getString(Constants.PREF_GOOGLE, "");
-                        if(url.equals("")){
-                            Toast.makeText(getApplicationContext(), "Configura el URL en los Settings", Toast.LENGTH_SHORT).show();
-                        } else if(!url.contains("assistant")){
-                            Toast.makeText(getApplicationContext(), "El url no tiene el formato adecuado.\nEjemplo: https://assistant.google.com/...", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Intent i = new Intent(Intent.ACTION_VIEW);
-                            i.setData(Uri.parse(url));
-                            startActivity(i);
-                        }
+                        googleAction();
                         break;
                     default:
                         Toast.makeText(getApplicationContext(),"En Construccion...", Toast.LENGTH_SHORT).show();
@@ -174,6 +164,37 @@ public class MainActivity extends AppCompatActivity {
         });
 
         ((TextView)(navigationView.getHeaderView(0).findViewById(R.id.tv_navheader_version))).setText("Ver: " + BuildConfig.VERSION_NAME);
+    }
+
+    private void googleAction() {
+        //Esta primera parte se comento ya que la intencion era abrir una accion de google assistant desde una url
+        /*//String url = "https://assistant.google.com/services/invoke/uid/000000d139bbc4d4?utm_source=Google&utm_medium=email&utm_campaign=holiday+sale";
+        String url = mSharedPreferences.getString(Constants.PREF_GOOGLE, "");
+        if(url.equals("")){
+            Toast.makeText(getApplicationContext(), "Configura el URL en los Settings", Toast.LENGTH_SHORT).show();
+        } else if(!url.contains("assistant")){
+            Toast.makeText(getApplicationContext(), "El url no tiene el formato adecuado.\nEjemplo: https://assistant.google.com/...", Toast.LENGTH_SHORT).show();
+        } else {
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            i.setData(Uri.parse(url));
+            startActivity(i);
+        }*/
+
+        String url = mSharedPreferences.getString(Constants.PREF_GOOGLE, "");
+        if(url.equals("")){
+            Toast.makeText(getApplicationContext(), "Configura el URL en los Settings", Toast.LENGTH_SHORT).show();
+        } else {
+            Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
+            intent.setClassName("com.google.android.googlequicksearchbox",
+                    "com.google.android.googlequicksearchbox.SearchActivity");
+            intent.putExtra("query", url);
+            //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }
+
+        //Este codigo solo lanza google assistant pero no es posible ponerle un query
+        /*startActivity(new Intent(Intent.ACTION_VOICE_COMMAND)
+                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));*/
     }
 
     @Override
