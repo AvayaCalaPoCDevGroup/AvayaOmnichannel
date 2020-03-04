@@ -85,8 +85,10 @@ public class SettingsFragment extends Fragment {
         et_settings_emailbody = view.findViewById(R.id.et_settings_emailbody);
         et_settings_head = view.findViewById(R.id.et_settings_head);
         et_settings_body = view.findViewById(R.id.et_settings_body);
+        et_settings_body.setVisibility(View.GONE); //Esto lo puse por que el usuario solo quiere una imagen
         btn_settings_head = view.findViewById(R.id.btn_settings_head);
         btn_settings_body = view.findViewById(R.id.btn_settings_body);
+        btn_settings_body.setVisibility(View.GONE); //Esto lo puse por que el usuario solo quiere una imagen
         btn_save = view.findViewById(R.id.btn_save);
 
         et_settings_contact.setText(mSharedPreferences.getString(Constants.PREF_CONTACT, ""));

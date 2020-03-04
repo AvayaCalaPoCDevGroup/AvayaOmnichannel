@@ -45,6 +45,7 @@ public class HomeFragment extends Fragment {
 
         iv_home_head = view.findViewById(R.id.iv_home_head);
         iv_home_body = view.findViewById(R.id.iv_home_body);
+        iv_home_body.setVisibility(View.GONE); //Esto lo puse por que el usuario solo quiere una imagen.
         String headPath = mSharedPreferences.getString(Constants.PREF_HEAD, "");
         String bodyPath = mSharedPreferences.getString(Constants.PREF_BODY, "");
 
