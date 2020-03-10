@@ -51,6 +51,7 @@ public class SettingsFragment extends Fragment {
     private TextView et_settings_messenger;
     private TextView et_settings_chat;
     private TextView et_settings_google;
+    private TextView et_settings_spaces;
     private TextView et_settings_emailto;
     private TextView et_settings_emailsubject;
     private TextView et_settings_emailbody;
@@ -80,6 +81,7 @@ public class SettingsFragment extends Fragment {
         et_settings_messenger = view.findViewById(R.id.et_settings_messenger);
         et_settings_chat = view.findViewById(R.id.et_settings_chat);
         et_settings_google = view.findViewById(R.id.et_settings_google);
+        et_settings_spaces = view.findViewById(R.id.et_settings_spaces);
         et_settings_emailto = view.findViewById(R.id.et_settings_emailto);
         et_settings_emailsubject = view.findViewById(R.id.et_settings_emailsubject);
         et_settings_emailbody = view.findViewById(R.id.et_settings_emailbody);
@@ -96,6 +98,7 @@ public class SettingsFragment extends Fragment {
         et_settings_messenger.setText(mSharedPreferences.getString(Constants.PREF_MESSENGERID, ""));
         et_settings_chat.setText(mSharedPreferences.getString(Constants.PREF_CHAT, Constants.CHAT_DEFAULT));
         et_settings_google.setText(mSharedPreferences.getString(Constants.PREF_GOOGLE, ""));
+        et_settings_spaces.setText(mSharedPreferences.getString(Constants.PREF_SPACES, ""));
         et_settings_emailto.setText(mSharedPreferences.getString(Constants.PREF_EMAIL_TO, ""));
         et_settings_emailsubject.setText(mSharedPreferences.getString(Constants.PREF_EMAIL_SUBJECT, ""));
         et_settings_emailbody.setText(mSharedPreferences.getString(Constants.PREF_EMAIL_BODY, ""));
@@ -122,6 +125,7 @@ public class SettingsFragment extends Fragment {
             editor.putString(Constants.PREF_MESSENGERID,et_settings_messenger.getText().toString());
             editor.putString(Constants.PREF_CHAT,et_settings_chat.getText().toString());
             editor.putString(Constants.PREF_GOOGLE,et_settings_google.getText().toString());
+            editor.putString(Constants.PREF_SPACES,et_settings_spaces.getText().toString());
             editor.putString(Constants.PREF_EMAIL_TO,et_settings_emailto.getText().toString());
             editor.putString(Constants.PREF_EMAIL_SUBJECT,et_settings_emailsubject.getText().toString());
             editor.putString(Constants.PREF_EMAIL_BODY,et_settings_emailbody.getText().toString());

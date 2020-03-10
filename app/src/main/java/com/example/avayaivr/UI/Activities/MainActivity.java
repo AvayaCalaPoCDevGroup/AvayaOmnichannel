@@ -11,6 +11,7 @@ import android.os.Bundle;
 import com.example.avayaivr.BuildConfig;
 import com.example.avayaivr.R;
 import com.example.avayaivr.UI.Clases.Constants;
+import com.example.avayaivr.UI.Clases.Utils;
 import com.example.avayaivr.UI.Fragments.ChatFragment;
 import com.example.avayaivr.UI.Fragments.SettingsFragment;
 import com.example.avayaivr.UI.Fragments.HomeFragment;
@@ -154,6 +155,9 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.nav_google:
                         googleAction();
                         break;
+                    case R.id.nav_spaces:
+                        spacesAction();
+                        break;
                     default:
                         Toast.makeText(getApplicationContext(),"En Construccion...", Toast.LENGTH_SHORT).show();
                         break;
@@ -164,6 +168,23 @@ public class MainActivity extends AppCompatActivity {
         });
 
         ((TextView)(navigationView.getHeaderView(0).findViewById(R.id.tv_navheader_version))).setText("Ver: " + BuildConfig.VERSION_NAME);
+    }
+
+    private void spacesAction() {
+        String url = "https://spaces.zang.io/spaces/"+mSharedPreferences.getString(Constants.PREF_SPACES, "");
+        if(url.equals("")){
+            Toast.makeText(getApplicationContext(), "Configura el URL en los Settings", Toast.LENGTH_SHORT).show();
+        } else {
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            if (Utils.isPackageInstalled("com.avaya.spaces", getPackageManager()))
+                i.setPackage("com.avaya.spaces");
+            i.setData(Uri.parse(url));
+            try{
+                startActivity(i);
+            } catch (Exception ex){
+                Toast.makeText(getApplicationContext(), "Url incorrecto, verifica la configuracion de Spaces", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     private void googleAction() {

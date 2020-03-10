@@ -34,6 +34,10 @@
                 android:icon="@drawable/google_assistant_icon"
                 android:title="Google Assistant" />
             <item
+                android:id="@+id/nav_spaces"
+                android:icon="@drawable/spaces_icon"
+                android:title="Avaya Spaces" />
+            <item
                 android:id="@+id/nav_email"
                 android:icon="@android:drawable/sym_action_email"
                 android:title="Email" />

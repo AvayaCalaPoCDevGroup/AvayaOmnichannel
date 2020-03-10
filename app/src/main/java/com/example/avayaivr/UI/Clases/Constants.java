@@ -7,6 +7,7 @@ public class Constants {
     public static final String PREF_CONTACT = "PREF_CONTACT";
     public static final String PREF_CHAT = "PREF_CHAT";
     public static final String PREF_GOOGLE = "PREF_GOOGLE";
+    public static final String PREF_SPACES = "PREF_SPACES";
     public static final String PREF_EMAIL_TO = "PREF_EMAIL_TO";
     public static final String PREF_EMAIL_SUBJECT = "PREF_EMAIL_SUBJECT";
     public static final String PREF_EMAIL_BODY = "PREF_EMAIL_BODY";
