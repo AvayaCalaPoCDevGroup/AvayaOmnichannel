@@ -10,5 +10,8 @@
     <string name="menu_messenger">Messenger</string>
     <string name="menu_whastapp">Whatsapp</string>
     <string name="menu_contact">Llamanos</string>
+    <string name="dialog_wait_title">Informacion</string>
+    <string name="dialog_wait_msg">Obteniendo presets...</string>
+    <string name="menu_facebook">Facebook</string>
 
 </resources>

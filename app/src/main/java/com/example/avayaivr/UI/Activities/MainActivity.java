@@ -113,11 +113,12 @@ public class MainActivity extends AppCompatActivity {
 
                         break;
                     case R.id.nav_messenger:
-                        String idMessenger = mSharedPreferences.getString(Constants.PREF_MESSENGERID,"");
+                        /*String idMessenger = mSharedPreferences.getString(Constants.PREF_MESSENGERID,"");
                         if(idMessenger.equals("")){
-                            Toast.makeText(getApplicationContext(), "Configura el ID de Messenger en los Settings", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Configura URL de Messenger en los Settings", Toast.LENGTH_SHORT).show();
                         } else {
-                            Uri uri = Uri.parse("fb-messenger://user/"+idMessenger);
+                            //Uri uri = Uri.parse("fb-messenger://user/"+idMessenger);
+                            Uri uri = Uri.parse("fb-messenger://user/J0Z.666");
                             Intent toMessenger= new Intent(Intent.ACTION_VIEW, uri);
                             toMessenger.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             //toMessenger.setPackage("com.facebook.orca");
@@ -129,7 +130,33 @@ public class MainActivity extends AppCompatActivity {
                             {
                                 Toast.makeText(getApplicationContext(), "Please Install Facebook Messenger",    Toast.LENGTH_LONG).show();
                             }
+                        }*/
+                        String url =  mSharedPreferences.getString(Constants.PREF_MESSENGERID,"");
+                        if(url.equals("")){
+                            Toast.makeText(getApplicationContext(), "Configura el URL en los Settings", Toast.LENGTH_SHORT).show();
+                        } else if(!url.contains("//m.me/")) {
+                            Toast.makeText(getApplicationContext(), "URL incorrecto, el formato debe ser:\nhttp://m.me/{pagina}", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Intent i = new Intent(Intent.ACTION_VIEW);
+                            i.setData(Uri.parse(url));
+                            try{
+                                startActivity(i);
+                            } catch (Exception ex){
+                                Toast.makeText(getApplicationContext(), "Url incorrecto, verifica la configuracion de Spaces", Toast.LENGTH_SHORT).show();
+                            }
                         }
+                        break;
+                    case R.id.nav_facebook:
+                        FacebookAction();
+                        drawer.closeDrawers();
+                        break;
+                    case R.id.nav_twitter:
+                        TwitterAction();
+                        drawer.closeDrawers();
+                        break;
+                    case R.id.nav_instagram:
+                        InstagramAction();
+                        drawer.closeDrawers();
                         break;
                     case R.id.nav_home:
                         replaceFragment(new HomeFragment());
@@ -171,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void spacesAction() {
-        String url = "https://spaces.zang.io/spaces/"+mSharedPreferences.getString(Constants.PREF_SPACES, "");
+        String url = mSharedPreferences.getString(Constants.PREF_SPACES, "");
         if(url.equals("")){
             Toast.makeText(getApplicationContext(), "Configura el URL en los Settings", Toast.LENGTH_SHORT).show();
         } else {
@@ -183,6 +210,51 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(i);
             } catch (Exception ex){
                 Toast.makeText(getApplicationContext(), "Url incorrecto, verifica la configuracion de Spaces", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private void InstagramAction() {
+        String url = mSharedPreferences.getString(Constants.PREF_INSTAGRAM, "");
+        if(url.equals("")){
+            Toast.makeText(getApplicationContext(), "Configura el URL en los Settings", Toast.LENGTH_SHORT).show();
+        } else {
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            i.setData(Uri.parse(url));
+            try{
+                startActivity(i);
+            } catch (Exception ex){
+                Toast.makeText(getApplicationContext(), "Url incorrecto, verifica la configuracion de Instagram", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private void TwitterAction() {
+        String url = mSharedPreferences.getString(Constants.PREF_TWITTER, "");
+        if(url.equals("")){
+            Toast.makeText(getApplicationContext(), "Configura el URL en los Settings", Toast.LENGTH_SHORT).show();
+        } else {
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            i.setData(Uri.parse(url));
+            try{
+                startActivity(i);
+            } catch (Exception ex){
+                Toast.makeText(getApplicationContext(), "Url incorrecto, verifica la configuracion de Twitter", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private void FacebookAction() {
+        String url = mSharedPreferences.getString(Constants.PREF_FACEBOOK, "");
+        if(url.equals("")){
+            Toast.makeText(getApplicationContext(), "Configura el URL en los Settings", Toast.LENGTH_SHORT).show();
+        } else {
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            i.setData(Uri.parse(url));
+            try{
+                startActivity(i);
+            } catch (Exception ex){
+                Toast.makeText(getApplicationContext(), "Url incorrecto, verifica la configuracion de Facebook", Toast.LENGTH_SHORT).show();
             }
         }
     }

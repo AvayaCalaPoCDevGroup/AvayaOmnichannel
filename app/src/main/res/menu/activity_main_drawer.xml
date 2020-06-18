@@ -26,6 +26,11 @@
                 app:showAsAction="always"
                 android:title="@string/menu_messenger" />
             <item
+                android:id="@+id/nav_facebook"
+                android:icon="@drawable/facebook_icon"
+                app:showAsAction="always"
+                android:title="@string/menu_facebook" />
+            <item
                 android:id="@+id/nav_chat"
                 android:icon="@drawable/chat_icon"
                 android:title="Chat" />
@@ -33,6 +38,14 @@
                 android:id="@+id/nav_google"
                 android:icon="@drawable/google_assistant_icon"
                 android:title="Google Assistant" />
+            <item
+                android:id="@+id/nav_twitter"
+                android:icon="@drawable/twitter_icon"
+                android:title="Twitter" />
+            <item
+                android:id="@+id/nav_instagram"
+                android:icon="@drawable/instagram_icon"
+                android:title="Instagram" />
             <item
                 android:id="@+id/nav_spaces"
                 android:icon="@drawable/spaces_icon"

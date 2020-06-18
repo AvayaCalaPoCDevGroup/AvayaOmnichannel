@@ -1,5 +1,6 @@
 package com.example.avayaivr.UI.Fragments;
 
+import android.app.ProgressDialog;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
@@ -9,16 +10,22 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.SimpleAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,12 +37,20 @@ import androidx.fragment.app.Fragment;
 import com.example.avayaivr.UI.Activities.MainActivity;
 import com.example.avayaivr.R;
 import com.example.avayaivr.UI.Clases.Constants;
+import com.example.avayaivr.UI.Clases.Models.Preset;
+import com.example.avayaivr.UI.Clases.WebMethods;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.File;
 import java.io.FileDescriptor;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import yuku.ambilwarna.AmbilWarnaDialog;
 
@@ -46,10 +61,18 @@ public class SettingsFragment extends Fragment {
     public static final int PICK_IMAGE_REQUEST_HEAD = 45330;
     public static final int PICK_IMAGE_REQUEST_BODY = 45331;
 
+    private ArrayList<Preset> presetsList = new ArrayList<>();
+    private ArrayList<String> presetsStringList = new ArrayList<>();
+    private ArrayAdapter adapterPresets;
+
+    private Spinner spnr_presets;
     private TextView et_settings_contact;
     private TextView et_settings_whatsapp;
     private TextView et_settings_messenger;
+    private TextView et_settings_facebook;
     private TextView et_settings_chat;
+    private TextView et_settings_instagram;
+    private TextView et_settings_twitter;
     private TextView et_settings_google;
     private TextView et_settings_spaces;
     private TextView et_settings_emailto;
@@ -76,10 +99,14 @@ public class SettingsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        spnr_presets = view.findViewById(R.id.spnr_presets);
         et_settings_contact = view.findViewById(R.id.et_settings_contact);
         et_settings_whatsapp = view.findViewById(R.id.et_settings_whatsapp);
+        et_settings_facebook = view.findViewById(R.id.et_settings_facebook);
         et_settings_messenger = view.findViewById(R.id.et_settings_messenger);
         et_settings_chat = view.findViewById(R.id.et_settings_chat);
+        et_settings_instagram = view.findViewById(R.id.et_settings_instagram);
+        et_settings_twitter = view.findViewById(R.id.et_settings_twitter);
         et_settings_google = view.findViewById(R.id.et_settings_google);
         et_settings_spaces = view.findViewById(R.id.et_settings_spaces);
         et_settings_emailto = view.findViewById(R.id.et_settings_emailto);
@@ -93,10 +120,17 @@ public class SettingsFragment extends Fragment {
         btn_settings_body.setVisibility(View.GONE); //Esto lo puse por que el usuario solo quiere una imagen
         btn_save = view.findViewById(R.id.btn_save);
 
+
+        adapterPresets = new ArrayAdapter(getContext(), R.layout.support_simple_spinner_dropdown_item, presetsStringList);
+        spnr_presets.setAdapter(adapterPresets);
+
         et_settings_contact.setText(mSharedPreferences.getString(Constants.PREF_CONTACT, ""));
         et_settings_whatsapp.setText(mSharedPreferences.getString(Constants.PREF_WHATSAPP, ""));
         et_settings_messenger.setText(mSharedPreferences.getString(Constants.PREF_MESSENGERID, ""));
+        et_settings_facebook.setText(mSharedPreferences.getString(Constants.PREF_FACEBOOK, ""));
         et_settings_chat.setText(mSharedPreferences.getString(Constants.PREF_CHAT, Constants.CHAT_DEFAULT));
+        et_settings_instagram.setText(mSharedPreferences.getString(Constants.PREF_INSTAGRAM, ""));
+        et_settings_twitter.setText(mSharedPreferences.getString(Constants.PREF_TWITTER, ""));
         et_settings_google.setText(mSharedPreferences.getString(Constants.PREF_GOOGLE, ""));
         et_settings_spaces.setText(mSharedPreferences.getString(Constants.PREF_SPACES, ""));
         et_settings_emailto.setText(mSharedPreferences.getString(Constants.PREF_EMAIL_TO, ""));
@@ -107,6 +141,20 @@ public class SettingsFragment extends Fragment {
         et_settings_body.setText(mSharedPreferences.getString(Constants.PREF_BODY, ""));
 
         Button btn_test = view.findViewById(R.id.btn_test);
+
+        spnr_presets.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Log.e("SettingsFrament", "item pressed = " + presetsList.get(position).name);
+                if(position > 0)
+                    renderValues(presetsList.get(position));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         btn_test.setOnClickListener(v -> {
             AmbilWarnaDialog ambilWarnaDialog = new AmbilWarnaDialog(getContext(), 0, colorListener);
@@ -122,8 +170,11 @@ public class SettingsFragment extends Fragment {
             SharedPreferences.Editor editor = mSharedPreferences.edit();
             editor.putString(Constants.PREF_CONTACT,et_settings_contact.getText().toString());
             editor.putString(Constants.PREF_WHATSAPP,et_settings_whatsapp.getText().toString());
+            editor.putString(Constants.PREF_FACEBOOK,et_settings_facebook.getText().toString());
             editor.putString(Constants.PREF_MESSENGERID,et_settings_messenger.getText().toString());
             editor.putString(Constants.PREF_CHAT,et_settings_chat.getText().toString());
+            editor.putString(Constants.PREF_INSTAGRAM,et_settings_instagram.getText().toString());
+            editor.putString(Constants.PREF_TWITTER,et_settings_twitter.getText().toString());
             editor.putString(Constants.PREF_GOOGLE,et_settings_google.getText().toString());
             editor.putString(Constants.PREF_SPACES,et_settings_spaces.getText().toString());
             editor.putString(Constants.PREF_EMAIL_TO,et_settings_emailto.getText().toString());
@@ -138,6 +189,23 @@ public class SettingsFragment extends Fragment {
             Toast.makeText(getContext(), "Guardado", Toast.LENGTH_SHORT).show();
         });
 
+        new getPresetsAsync().execute();
+
+    }
+
+    private void renderValues(Preset preset) {
+        et_settings_contact.setText(preset.Phone);
+        et_settings_whatsapp.setText(preset.WhatsApp);
+        et_settings_messenger.setText(preset.Messenger);
+        et_settings_facebook.setText(preset.Facebook);
+        et_settings_chat.setText(preset.WebChat);
+        et_settings_instagram.setText(preset.Instagram);
+        et_settings_twitter.setText(preset.Twitter);
+        et_settings_google.setText(preset.Google);
+        et_settings_spaces.setText(preset.Spaces);
+        et_settings_emailto.setText(preset.Email);
+        //et_settings_emailsubject.setText(mSharedPreferences.getString(Constants.PREF_EMAIL_SUBJECT, ""));
+        //et_settings_emailbody.setText(mSharedPreferences.getString(Constants.PREF_EMAIL_BODY, ""));
     }
 
     private void ChooseImage(int requestCode) {
@@ -359,5 +427,50 @@ public class SettingsFragment extends Fragment {
      */
     public static boolean isGooglePhotosUri(Uri uri) {
         return "com.google.android.apps.photos.content".equals(uri.getAuthority());
+    }
+
+    public class getPresetsAsync extends AsyncTask<Void, Void, String>{
+
+        private ProgressDialog dialog;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            dialog = ProgressDialog.show(getActivity(), getResources().getString(R.string.dialog_wait_title), getResources().getString(R.string.dialog_wait_msg), true);
+        }
+
+        @Override
+        protected String doInBackground(Void... voids) {
+            String resp = WebMethods.getProfiles();
+            return resp;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            dialog.dismiss();
+            Log.e("SettingsFrament", "GetPresets On POst Execute s = " + s);
+            ArrayList<Preset> newpresetsList = null;
+            try{
+                newpresetsList = new Gson().fromJson(s, new TypeToken<List<Preset>>(){}.getType());
+            } catch (Exception ex) {
+                Log.e("SettingsFrament", "GetPresets On POst Execute error = " + ex.getMessage());
+                Toast.makeText(getContext(), "Error al obtener los presets", Toast.LENGTH_LONG).show();
+            }
+            ActualizaPresets(newpresetsList);
+        }
+
+        private void ActualizaPresets(ArrayList<Preset> newpresetsList) {
+            presetsList.clear();
+            presetsStringList.clear();
+            presetsList.add(new Preset());
+            if(newpresetsList != null)
+                presetsList.addAll(newpresetsList);
+            for (Preset preset : presetsList) {
+                presetsStringList.add(preset.name);
+            }
+            adapterPresets.notifyDataSetChanged();
+
+        }
     }
 }

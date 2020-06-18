@@ -11,6 +11,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:text="Presets" />
+
+    <Spinner
+        android:id="@+id/spnr_presets"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:layout_marginTop="10dp"
+        android:inputType="phone" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:text="Customer Service Number" />
 
     <EditText
@@ -48,6 +61,19 @@
         android:ems="10"
         android:layout_marginTop="10dp"
         android:inputType="number" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Facebook URL" />
+
+    <EditText
+        android:id="@+id/et_settings_facebook"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:layout_marginTop="10dp"
+        android:inputType="textUri" />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -59,6 +85,32 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:inputType="text" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Instagram URL" />
+
+        <EditText
+            android:id="@+id/et_settings_instagram"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:layout_marginTop="10dp"
+            android:inputType="textUri" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Twitter URL" />
+
+        <EditText
+            android:id="@+id/et_settings_twitter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:layout_marginTop="10dp"
+            android:inputType="number" />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
